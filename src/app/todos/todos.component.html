@@ -1,0 +1,15 @@
+<div class="todos">
+  <button (click)="addTask()">Add</button>
+  <input
+    [(ngModel)]="text"
+    *ngIf="addTaskForm"
+    type="text"
+    placeholder="context"
+  />
+  <app-todo
+    *ngFor="let task of tasks"
+    [task]="task"
+    (taskEmitter)="deleteTask($event)"
+    (taskDone)="taskDone($event)"
+  ></app-todo>
+</div>

@@ -1,0 +1,11 @@
+<div class="container" [ngClass]="{ done: task.complete }">
+  <p class="delete" (click)="deleteTask(task)">&#10008;</p>
+  <p>
+    {{ task.context }}
+    <input
+      type="checkbox"
+      [checked]="task.complete"
+      (click)="taskState(task)"
+    />
+  </p>
+</div>

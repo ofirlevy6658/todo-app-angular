@@ -1,0 +1,16 @@
+.container{
+    height:4rem;
+    position: relative;
+    border-top: 1px black solid;
+}
+.done{
+    background-color: #f4f4f4;
+    color: red;
+    text-decoration: line-through;
+}
+.delete{
+    top:-20px;
+    right: 0;
+    position: absolute;
+    cursor: pointer;
+}
