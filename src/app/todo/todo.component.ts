@@ -10,13 +10,16 @@ export class TodoComponent implements OnInit {
   @Input() task: Task;
   @Output() taskEmitter = new EventEmitter<Task>();
   @Output() taskDone = new EventEmitter<Task>();
-  completed: boolean;
+  @Output() taskEdit = new EventEmitter<Task>();
   constructor() {}
   deleteTask(task: Task) {
     this.taskEmitter.emit(task);
   }
   taskState(task: Task) {
     this.taskDone.emit(task);
+  }
+  editTask(task: Task) {
+    this.taskEdit.emit(task);
   }
   ngOnInit(): void {}
 }

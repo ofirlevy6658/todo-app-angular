@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Task } from '../task';
 @Component({
   selector: 'app-todos',
@@ -6,40 +7,35 @@ import { Task } from '../task';
   styleUrls: ['./todos.component.css'],
 })
 export class TodosComponent implements OnInit {
-  tasks: Task[] = [
-    {
-      complete: false,
-      context: 'take dog out',
-      id: '3124d21',
-    },
-    {
-      complete: false,
-      context: 'buy pizza',
-      id: '3124ds21',
-    },
-    {
-      complete: true,
-      context: 'eat food',
-      id: '3124dd21',
-    },
-  ];
+  tasks: Task[];
   addTaskForm = false;
   text = '';
-
+  data: any;
   addTask() {
     this.addTaskForm = !this.addTaskForm;
     if (!this.text) return;
-    if (!this.addTaskForm)
-      this.tasks.push({
-        complete: false,
-        context: this.text,
-        id: '' + Math.random() * 32100321,
+    this.http
+      .post<any>('http://localhost:3000/tasks', { context: this.text })
+      .subscribe((data) => {
+        this.tasks = data;
       });
+    // if (!this.addTaskForm)
+    //   this.tasks.push({
+    //     complete: false,
+    //     context: this.text,
+    //     id: '' + Math.random() * 32100321,
+    //   });
     this.text = '';
   }
   deleteTask(task: Task) {
-    this.tasks = this.tasks.filter((el) => task.id !== el.id);
+    // this.tasks = this.tasks.filter((el) => task.id !== el.id);
+    this.http
+      .put<any>('http://localhost:3000/tasks', { id: task.id })
+      .subscribe((data) => {
+        this.tasks = data;
+      });
   }
+
   taskDone(task: Task) {
     this.tasks = this.tasks.map((el) => {
       if (task.id === el.id) {
@@ -48,8 +44,16 @@ export class TodosComponent implements OnInit {
       } else return el;
     });
   }
+  taskEdit(task: Task) {
+    console.log(task);
+  }
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.http.get<any>('http://localhost:3000/tasks').subscribe((data) => {
+      this.tasks = data;
+      console.log(this.tasks);
+    });
+  }
 }
